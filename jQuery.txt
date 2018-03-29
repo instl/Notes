@@ -1,0 +1,227 @@
+1.HTML标签:
+	<1><a href="http://www.runoob.com/" target="_blank">访问菜鸟教程!</a>
+
+
+2.HTML属性:
+	<1>class(可以有多个class属性)
+	<2>id(只能有一个id属性)
+	<3>style(定义元素的行内样式)
+	<4>title
+
+3.CSS 可以通过以下方式添加到HTML中:
+
+    ①内联(行内)样式- 在HTML元素中使用"style"属性.[行内式是在标记的style属性中设定CSS样式。这种方式没有体现出CSS的优势，不推荐使用。]
+	<!DOCTYPE>
+	<html>
+	<head>
+  	<meta charset="utf-8" />
+  	<title>行内样式</title>
+	</head>
+	<body>
+	     <!--使用行内样式引入CSS-->
+	     <h1 style="color:red;">Leaping Above The Water</h1>
+	     <p style="color:red;font-size:30px;">我是p标签</p>
+	</body>
+	</html>
+
+    ②内部样式表 -在HTML文档头部 <head> 区域使用<style> 元素 来包含CSS
+	<!DOCTYPE>
+	<html>
+	<head>
+	  <meta charset="utf-8" />
+	  <title>内部样式表</title>
+	  <!--使用内部样式表引入CSS-->
+	  <style type="text/css">
+	    div{
+	        background: green;
+	    }
+	  </style>
+	</head>
+	<body>
+	     <div>我是DIV</div>
+	</body>
+	</html>
+     
+    ③外部引用(链接引入) - 使用外部 CSS 文件(企业级推荐)
+	<!DOCTYPE>
+	<html>
+	<head>
+	  <meta charset="utf-8" />
+	  <title>外部样式表</title>
+	  <!--链接式:推荐使用-->
+	  <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+	 </head>
+	<body>
+	     <ol>
+	         <li>1111</li>
+	         <li>2222</li>
+	     </ol>
+	</html>
+
+     ④外部导入式(@import)[不推荐]
+	[导入式会在整个网页装载完后再装载CSS文件，因此这就导致了一个问题，如果网页比较大则会儿出现先显示无样式的页面，闪烁一下之后，再出现网页的样式。这是导入式固有的一个缺陷。]
+
+
+
+4.表格:
+<table border="1">
+    <tr>
+        <th>Header 1</th>
+        <th>Header 2</th>
+    </tr>
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+
+5.无序列表
+   <ul>
+	<li>Coffee</li>
+	<li>Milk</li>
+   </ul> 
+
+6.有序列表:
+   <ol>
+	<li>Coffee</li>
+	<li>Milk</li>
+   </ol> 
+
+7.自定义列表
+   <dl>
+	<dt>Coffee</dt>
+	<dd>- black hot drink</dd>
+	<dt>Milk</dt>
+	<dd>- white cold drink</dd>
+   </dl>
+
+8.form表单:
+	<form action="/text/LoginServlet" method="post">
+		username:<input type="text" name="username1"><br>
+		password:<input type="password" name="password1"><br>
+	
+		<input type="submit" value="Login"/>&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="reset"/>
+	</form>
+	
+	注意:单选按钮-->type="radio"
+	      复选框-->type="checkbox"
+	      文本框-->type="text"
+	      密码框-->type="password"
+	      提交按钮-->type="submit"
+	      按钮-->type="button"
+9.rest按钮:
+	<html>
+		<head>
+		<script type="text/javascript">
+			function formReset(){
+			document.getElementById("myForm").reset()
+			}
+		</script>
+		</head>
+
+		<body>
+		<p>在下面的文本框中输入一些文本，然后点击重置按钮就可以重置表单。</p>
+
+		<form id="myForm">
+		姓名：<input type="text" size="20"><br />
+		年龄：<input type="text" size="20"><br />
+		<br />
+		<input type="button" onclick="formReset()" value="重置">
+		</form>
+		</body>
+
+	</html>
+
+10.jQuery的引用:
+
+		<head>
+		<script src="jquery-1.10.2.min.js"></script>
+		</head>
+
+11.jQuery的基本语法:
+		基础语法： $(selector).action()
+
+12.jQuery的选择器:
+
+	<1>jQuery 元素选择器,基于元素名选取元素。
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<meta charset="utf-8"> 
+		<title>index</title> 
+		<script src="http://cdn.static.runoob.com/libs/jquery/2.0.0/jquery.min.js">
+		</script>
+		<script>
+		$(document).ready(function(){
+		  $("button").click(function(){
+		    $("p").hide();
+		  });
+		});
+		</script>
+		</head>
+
+		<body>
+		<h2>这是一个标题</h2>
+		<p>这是一个段落。</p>
+		<p>这是另一个段落。</p>
+		<button>点我</button>
+		</body>
+		</html>
+
+	<2>jQuery #id 选择器通过 HTML 元素的 id 属性选取指定的元素。
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<meta charset="utf-8"> 
+		<title>index</title> 
+		<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+		</script>
+		<script>
+		$(document).ready(function(){
+		  $("button").click(function(){
+		    $("#test").hide();
+		  });
+		});
+		</script>
+		</head>
+
+		<body>
+		<h2>这是一个标题</h2>
+		<p>这是一个段落</p>
+		<p id="test">这是另外一个段落</p>
+		<button>点我</button>
+		</body>
+
+		</html>
+	
+	<3>jQuery 类选择器可以通过指定的 class 查找元素。
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<meta charset="utf-8"> 
+		<title>index</title> 
+		<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+		</script>
+		<script>
+		$(document).ready(function(){
+		  $("button").click(function(){
+		    $(".test").hide();
+		  });
+		});
+		</script>
+		</head>
+		<body>
+
+		<h2 class="test">这是一个标题</h2>
+		<p class="test">这是一个段落。</p>
+		<p>这是另外一个段落。</p>
+		<button>点我</button>
+		</body>
+		</html>
+
+13.

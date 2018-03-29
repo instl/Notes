@@ -1,0 +1,14 @@
+1.Servlet主要技术:
+	<1>Servlet技术本身(servlet接口)
+	<2>cookie(小甜饼)
+	<3>session(会话)
+
+2.session专题:
+	<1>cookie保存在客户端,session保存在服务器端.
+	<2>session的存活时间是浏览器的开和关闭之前的时间,这叫一次会话.
+	<3>session和cookie是web开发中的通用技术.非javaweb特有.javaweb的session以接口的方式呈现.
+	
+	javax.servlet.http.HttpSession[接口].
+	session是由javax.servlet.http.HttpServletRequest[接口]创建.
+	
+	javax.servlet.http.HttpServletRequest中的getSession/getSession(boolean create)创建.

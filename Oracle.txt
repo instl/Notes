@@ -1,0 +1,55 @@
+1.数据库的数据类型:
+	<1>数字类型,可以做所有的数学运算
+	<2>字符型,可以做拼接的运算
+	<3>日期类型,可以做加减运算
+	<4>大数据类型(不支持查看数据结果)
+
+2.数据库SQL的5种指令
+	<1>.DCL(Data Control Language)数据控制语句:
+		grant,revoke...
+
+	<2>.DDL(Data Definition Language)数据定义语句:
+		create,alter,drop,truncate,comment on,rename to...
+
+	<3>.DML(Data Manipulating Language)数据操纵语句:
+		insert,update,delete
+
+	<4>.DQL(Date Query Language)数据查询语句:
+		select
+
+	<5>.DTL(Data Transaction Language)数据事务语句:
+		commit,rollback,savepoint
+
+3.排序字句:
+	order by 列名 asc(升序,默认可不写) | desc (降序)
+	
+	--查询出职称中带VP的员工名字,工资,并按工资的降序排序
+		select first_Name,salary,title from s_emp
+		where title like '%VP%' order by 2 desc;
+
+4.添加约束的2种方法:
+	<1>列级语法添加--边定义列,边添加约束
+	<2>表级语法添加--先定义列,然后再添加约束(推荐使用)
+
+5.事务的四大特性(ACID):
+	atomic,原子性,事务是不可再分割的,要么同时成功,要么同时失败
+	consistency,一致性,事务一旦结束,内存中的数据和数据库中的数据是保持一致的
+	isolation,隔离性,事务之间互不干扰,一个事务的结束意味着下一个事务的开启
+	duration,持久性,事务一旦提交,则数据持久化到数据库中,永久保存
+
+6.多事务的并发处理机制:
+
+	原因:多个事务同时操作一个表中的同一行数据,如果这些操作是
+     	修改操作的话,就会产生并发问题,如果不处理,则会造成数
+     	据不一致的情况.
+
+7.高级查询:
+	<1>关联查询
+		select e.first_name,d.name from s_emp e,s_dept d
+		where e.dept_id=d.id;
+		
+		select e.first_name,d.name from s_emp e
+		join s_dept d on e.dept_id=d.id;
+
+	<2>
+

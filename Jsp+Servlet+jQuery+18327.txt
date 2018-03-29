@@ -1,0 +1,498 @@
+1.互联网的三大基石:
+	http(Hyper Text Transfer Protocol)传输
+	url定位
+	html显示
+
+2.web编程的3要素:
+	<1>客户端
+	<2>服务器
+	<3>通信协议(w3c制定的http协议)
+
+2.http是一个无状态的协议(本次连接的请求和下一次的连接无任何关系)
+	http1.1支持持续连接(但是必须声明).一次连接可以有多个请求.
+
+3.请求的格式:
+	<1>请求行.		如:GET  /  HTTP/1.1
+	<2>请求头(消息头).
+	<3>请求实体. (当采用post提交的时候就会有请求实体,get方式没请求实体)
+
+4.POST:上传文件.
+
+5.状态码:	200 ok.
+		404 page not found
+		500 server error
+
+6.通用的消息头:
+	Connection:keep-alive
+	Date:产生当前消息的时间
+	Pragma:no-cache
+	Cache-Control:指示浏览器或者服务器的具体策略
+	Content-Length:表示(请求/响应)正文长度.
+
+7.架构:
+	C/S:
+	client/server:客户机和服务器架构.
+	
+	B/S:
+	Browser/Server:浏览器和服务器架构.
+
+8.servlet运行流程:
+	<1>浏览器发送请求到服务器
+	<2>服务请根据请求的url,去掉用相应的servlet类
+	<3>通过servlet中的打印流对象将生成的html数据输出给服务器
+	<4>服务器将servlet生成的数据再输出给客户端浏览器
+
+	Servlet是实现了特殊接口的java类.
+	Jsp本质上是servlet,所以jsp也是Java类.
+	Servlet必须要在服务器里面跑.
+
+9.tomcat的三大功能:
+	<1>Web服务器
+	<2>jsp容器
+	<3>servlet容器
+
+10.动态网页的发展:
+	<1>CGI - 最早的
+	<2>ASP - Microsoft(javascript[VBScript]+html+com组件[开发成本高])
+	<3>PHP - 没有企业级的支持
+	<4>JSP - [html+JavaScript+java片段+jsp语法+jstl](入门门槛高)
+
+11.配置tomcat8.0
+	<1>检查jdk
+	<2>环境变量 - 新建 - 变量名:CATALINA_HOME. 变量值:Apache根目录.
+	<3>检查tomcat是否配置成功.cmd-startup.bat(Windows)/startup.sh(Linux).
+
+12.Eclipse配置tomcat
+	window - show view - other - servers - 创建新的server - tomcat8.0
+	WebContent - 是web应用的工程的上下文目录[根目录,不需手动输地址]
+	
+13.Servlet简述:
+	Servlet是由Java编写的服务器程序,是由服务器调用执行的,按照servlet的规范编写的Java类.
+	
+	API:javax.servlet(java扩展包)
+	
+	<1>javax.servlet.Servlet(接口) - 支持所有协议的servlet
+	<2>javax.servlet.GenericServlet(抽象类) - 通用servlet
+	<3>javax.servlet.http.HttpServlet(抽象类) - 针对http协议编写的servlet
+	
+	一.servlet第一种创建方式:
+		web3.0之前,需要在web.xml中进行相关servlet的配置.
+
+		<servlet>
+			<servlet-name>和servlet类名保持一致</servlet-name>
+			<servlet-class>类的全限定名</servlet-class>
+		</servlet>
+		<servlet-mapping>
+			<servlet-name>和上一个servlet-name名称一致</servlet-name>
+			<url-pattern>唯一的(如:/login)</url-pattern>
+		</servl-mapping>
+		
+	过程:①.服务器启动,加载web.xml文件
+	     ②.解析url地址各个部分
+		http -> 请求的协议
+		localhost -> 服务器所在的主机地址
+		8888  -> tomcat服务器的端口号
+		myServlet01 -> tomcat中的webapps目录中的工程上下文名称.
+		/login -> 定位到myServlet01工程中的对应的servlet.
+			
+		--> 服务器中的任何一个资源的标志是唯一的(url).	     
+		
+	      ③.拿到/login资源路径到web.xml去和servlet-mapping中的url-pattern进行匹配.
+		如果能够匹配到,就获取到servlet-name中的名称,然后拿着该名称到servlet标签中
+		查找和servlet-name有一致的.如果有对应的就获取serlvet-class类的全限定名.
+		通过Java反射技术,在服务器端生成一个servlet的实例(对象).
+		然后该实例就会调用init,service,destroy方法
+
+14.Servlet的生命周期:
+	装载(加载web.xml文件) - 实例化 - 调用init - 调用service - 调用destroy销毁.
+
+15.Servlet何时实例化:
+	1.第一次请求到达的时候,服务器会创建一个servlet实例
+	  然后调用init方法,进行初始化操作.
+		结论:servlet是单例的,一个可以服务多给请求.
+
+	2.可以再web.xml中进行配置.
+		<load-on-startup>1</load-on-startup>
+		如果是大于0的正数,那容器启动的时候就会实例化servlet.数值越小越先执行.
+
+16.init方法:
+	初始化的操作[如:获取数据库连接]
+	servlet实例成功后,就会第一时间加载init方法.无论有多少请求到达服务器,init该方法只运行一次.
+
+17.service方法(serlvet核心):
+	负责接收请求,响应数据给客户端.主要是进行业务逻辑操作.
+	HttpServlet中的service方法会判断请求的方式.从而决定调用doGet还是doPost
+	
+18.destroy方法:
+	①容器关闭.
+	②容器中卸载servlet
+
+19.servlet第二种创建方式:
+	 <1>注解开发javax.servlet.annotation.WebServlet.
+		@WebServlet(urlPatterns="/login",loadOnStartup=1)
+		public class TwoServlet extends GenericServlet{
+			@Override
+			public void service(SerlvetRequest request, ServletResponse response)}
+
+
+20.如何根据url拼接的参数值名来获取参数值.(直接在url地址栏上输入的,接受url地址栏传参)[单个参数,多个参数不同参数名,多个参数同参数名]
+	
+	用到HttpServletRequest(封装了所有请求的数据),父接口ServletRequest中的getParameter
+	String uname = request.getParameter("uname");
+	String password = request.getParameter("password");
+	out.println("uname");
+	out.println("password");
+	
+	如果多个参数名是一样的,则获取到的将会是一个字符串数组.
+	调用的是getParameterValues.
+	String[] = request.getParameterValues("gender");
+	for(String string:gender){
+	out.println(string);}
+
+21.表单提交:
+	form表单中的控件里面的name属性的值必须要提供,不然无法传参.
+		@WebServlet(urlPatterns="/LoginAction",loadOnStartup=1)
+		public class TwoServlet extends GenericServlet{
+			@Override
+			public void service(SerlvetRequest request, ServletResponse response)
+			PrintWriter out = request.getWriter();
+			String uname = response.getParameter("uname");
+			out.println("uname":+uname);}
+
+
+
+22.用户登录验证,表单提交
+	
+  <form action="/LoginAction" method="post">
+   username:<input type="text" name="uname" placeholder="输入名字"><br>
+   password:<input type="password" name="password1" placeholder="输入密码"><br>
+   <input type="submit" value="Login"/>&nbsp;&nbsp;&nbsp;
+   <input type="reset" value="reset"/>
+  </form>
+	
+	@注意:input标签里面一定要有name属性,后台就是用name属性才能拿input文本框的值.	
+
+	对应的,我们在LoginServlet中还要重写2个方法(doGet和doPost)
+
+22.javax.servlet.http
+	Interface HttpServletRequest
+	当客户端向服务器端发送一个请求的时候,容器会创建一个HttpServletRequest,用来封装请求的数据.
+
+	请求的方式:
+		<1>get请求.
+			->直接在浏览器地址栏中输入url.
+			->通过html的<a></a>标签进行提交
+			->form表单的默认请求方式,或者指定method为get
+			->window.load="/xxx/xxx";
+		<2>post请求(只有一种,指定from表单的请求method为post)
+			-><form action="" method="post">
+			
+
+23.2种情况下处理乱码:
+	<1>get请求:①超链接参数存在中文,一级/二级编码,一级/二级解码.
+		   ②form表单get请求乱码,找到tomcat的server.xml文件.
+			在8888处,添加URIEncoding="utf-8";
+
+	<2>post请求:①在String uname = request.getParameter("uname");之前要写上如下代码:request.setCharacterEnconding("utf-8");
+
+
+24.get请求和post请求的区别:
+	<1>get请求,是将参数拼接到url中,在地址栏中,这些参数都是可见的.
+	<2>post请求,是将请求封装到HEADER信息中,参数在地址栏中不可见.
+	
+		->post安全性比get高.
+		->get地址栏刷新仍然会执行一次操作(无法防止误操作).post可以防止重复提交.
+
+	<3>get通常是在服务器中获取数据[get请求查询出来的数据会与浏览器的缓存机制结合,大大提高查询的效率]
+	   post请求一般是向服务器中提交数据[包括增删改]
+	<4>post请求的数据的长度没有限制,get请求的数据有限制,不会超过2kb.
+	<5>涉及到二进制的数据,用post提交.
+
+	如何确定要使用get还是post:
+		->只是有个查询按钮[get请求]
+		->登录,保存,注册,删除[post请求]
+
+
+25.javax.servlet.Servlet[接口]  -> 5个方法
+	javax.servlet.GenericServlet[实现类] - 抽象类 -> 并没有实现service方法
+		javax.servlet.http.HttpServlet[实现类] ->实现了service方法
+
+
+
+
+26.设计一个loginAction的控制器(主要目的是为了获取username和password):
+
+@WebServlet(urlPatterns="/student/login")
+public class LoginAction extends HttpServlet{
+	private static final long serialVersionUID=-1;//序列化uid
+	private StudentService StudentServiceImpl = (StudentService)BeansFactory.getInstance("studentService");//获取业务层实例
+	@Override
+	protected void service(HttpServletRequest request, HttpServlet response) throws Exception{
+	//获取form表单控件的数据
+	//采用的是post提交方式,第一步处理post请求乱码问题
+	request.setCharacterEncoding("utf-8");
+	//1.获取用户名
+	String username = request.getParameter("username");//获取在jsp中的input标签里面的name是username的数据.
+	//2.获取密码
+	String password = request.getParameter("password");//同样是从jsp中传来的.
+	//3.调用service层中的方法
+	Student s = service.login(username);
+	//4.判断...
+	if(s!=null){
+		//5.判断密码是否正确
+		if(s.getPassword().equals(password){
+			//将用户对象放进session作用域中
+			HttpSession session = request.getSession();
+			session.setAttribute("s","s");
+			
+		}else{//说明密码错误
+		response.sendRedirect("/studentManager/student/login?error=1");}
+	}else{//说明用户不存在(s都是空了)
+	response.sendRedirect("/studentManager/student/login?error=0");}
+}}
+
+
+27.作用域:
+	<1>request作用域: -> 一次请求,一次响应.
+	<2>session作用域: -> 一次会话期间[打开浏览器->关闭浏览器].
+	<3>application作用域: -> [服务器开启->服务器关闭].
+
+
+Http协议是不能记住多次请求是不是来自于同一个client
+服务器会为每个请求创建一个session空间[专门为一个client端进行服务],并且在响应给客户端的时候,同时发给客户端该client端对应的session空间的id,该id叫做session空间的唯一标志,名称为[jsessionid].
+下次访问的请求会携带该id,服务器会知道该client的身份.
+
+28.获取HttpSession对象:
+@WebServlet(urlPatterns="/student/createsession")
+public class SessionFieldAction extends HttpServlet{
+
+	private static final serialVersionUID=-1L;
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse) throws Exception{
+	//获取HttpSession对象
+	//关联对应的session空间,如果没有,则新建
+	//如果已经存在,则直接获取
+	HttpSession session = request.getSession();
+	//将数据放到session空间中
+	session.setAttribute("username","yuri");
+	response.sendRedirect(request.getContextPath()+"student/readsession"}
+}
+
+@WebServlet(urlPatterns="/student/readsession")
+public class SessionReadAction extends HttpSerlvet{
+
+	private static final long serialVersionUID=-1L;
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws Exception
+	
+	PrintWriter out = response.getWriter();	
+
+	//1.获取HttpSession对象
+	HttpSession session = request.getSession();
+	String f = (String) session.getAttribute("username");
+	out.println(f);
+	}
+
+@WebServlet(urlPatterns="/logout")
+public class SessionRemoveAction extends HttpServlet{
+	
+	private static final long serialVersionUID = -1L;
+	
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws Exception
+	
+	//清除session
+	request.getSession().invalidate();
+	//重定向到登录界面
+	response.sendRedirect(request.getContextPath()+"/login");
+
+	}
+
+
+29.cookie专题
+@WebServlet(urlPatterns="/cookie")
+public class CookieCreateAction extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response){
+	PrintWriter out = response.getWriter();
+	HttpSession session = request.getSession();
+	out.println(session.getId());
+	}}
+
+	<1>Session的会话跟踪机制-->利用cookie管理session
+	<2>cookie的存放的条数和大小有限制,数据不能超过4KB
+	<3>浏览器端通过请求头信息将cookie发送给服务器,服务器通过响应头信息将cookie发送到浏览器
+	####每个请求到达服务器的时候,容器都会为该请求的client创建一个session空间,每个session空间都有唯一一个的标志,叫做sessionid,server将内容(数据)以及响应的消息头里面的sessionid发给浏览器,在客户端通过cookie来缓存session会话.
+	#####下次客户端再次发送请求的时候,会通过请求头信息再次将cookie直接发给server.然后server取出接收的sessionid,在server内部查找与其对应的session空间.
+
+	cookie和session解决了Http协议中无状态的特性.cookie的生存空间是在浏览器关闭之前.
+
+
+30.手动创建cookie
+@WebServlet(urlPatterns="/cookie")
+public class CookieCreateAction extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	
+	//手动创建cookie
+	Cookie c = new Cookie("cookie","ck");
+	//设置过期时间(一分钟)
+	c.setMaxAge(60);
+	//设置路径
+	c.setPath("/");
+	//通过HttpResponse#addCookie方法,将cookie发送给客户端
+	response.addCookie(c);
+	}}
+
+@WebServlet(urlPatterns="/CookieReadAction")
+public class CookieReadAction extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		PrintWriter out = response.getWriter();
+		//通过HttpServletRequest中的getCookie方法
+		Cookies[] cs = request.getCookies();
+		//找到之前创建的Cookie,先判断之前有没有创建cookie
+		if(null!=cs&&cs.length>0){
+			for(Cookie c:cs){
+			if("cookie".equals(c.getName())){
+			out.println(c.getName()+"====>"+c.getValue());}}
+		}
+	
+	}}
+
+	#######Cookie保存在客户端,浏览器关闭不影响cookie(除非手动清除本地cookie缓存)
+	#######Cookie原则上value不允许存储中文(通过二级编码可以实现存储中文)
+
+31.url的重写(目的是防止用户禁用了cookie,服务器无法使用session)
+@WebServlet(urlPatterns="/url")
+public class URLOverrideAction extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	//设置字符集,防止中文乱码
+	response.setContentType("text/html;charset=utf-8");
+	PrintWriter out = response.getWriter();
+	//获取session
+	HttpSession session = request.getSession();
+	//获取的url赋给一个String
+	String url = request.getContextPath()+"/url";
+	//对url进行回写
+	url = response.encodeRedirectURL(url);
+	//打印sessionid
+	out.println(session.getId());
+	//重新链接到/url,表示刷新
+	out.println("<a href='"+url+"'>刷新</a>")}}
+
+	########如果浏览器cookie和url回写同时开启,那么会优先采用cookie方式
+
+32.Servlet路径匹配模式:
+	<1>精确匹配, urlPatterns="/student/list"
+	<2>模糊匹配, urlPatterns="/*"
+		     urlPatterns="/student/*"
+	精确匹配>模糊匹配>后缀匹配
+	####在写模糊匹配的时候,不能与css和js的路径有冲突,否则将失去网页样式######
+
+@WebServlet(urlPatterns="/like/*")
+public class LikeUrlAction extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service (HttpServletRequest request, HttpServletResponse response) throw Exception{
+	response.setContextType("text/html,charset=utf-8");
+	PrintWriter out = response.getWriter();
+	//获取模糊路径
+	String pathInfo = request.getPathInfo();
+	out.println("pathInfo"+pathInfo);
+	out.println("模糊匹配.....");
+	}}
+
+33.三大作用域:
+	<1>request作用域:一次请求,一次响应
+	<2>session作用域:一次会话[浏览器开启---->浏览器关闭]
+	<3>application作用域:服务器开启----->服务器关闭
+
+@WebServlet(urlPatterns="/application/*")
+public class TestApplication extends HttpServlet{
+	private static final long serialVersionUID=-1L;
+	@Override
+	protected void service(HttpServletRequest request,HttpServletResponse response) throws Exception
+		String path = request.getPathInfo();
+		PrintWriter out = response.getWriter();
+	switch (path){
+	case "/set":
+		//获取ServletContext对象
+		ServletContext sc = request.getServletContext();
+		sc.setAttribute("application","app");
+		break;
+	case "/get":
+		//从application作用域中获取
+		ServletContext cc = request.getServletContext();
+		String app = (String) cc.getAttribute("application");
+		out.println(app);
+		break;
+	}
+}
+
+34.Servlet的过滤器:
+			<1>XML配置
+			<2>注解配置
+		过滤器不是一个标准的Servlet,它不能处理请求和生成响应.
+	请求-->filter1-->filter2-->filter3-->Web资源
+
+import javax.servlet.Filter;
+public class FilterAction implements Filter{
+	@Override
+	public void destroy(){
+	System.out.println("过滤器/监听器销毁....");
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response) throws Exception{
+		//对请求进行过滤.
+	System.out.println("过滤链....");
+	chain.doFilter(request,response);
+	}
+	 
+	@Override
+	public void init(FilterConfig filterConfig) throws Exception{
+	System.out.println("过滤器/监听器初始化....");
+	}
+}
+
+	########servlet过滤器/监听器在web容器(tomcat)启动的时候初始化的..
+
+
+
+
+  
+
+
+
+##########################
+11.servlet中的注解名字:
+	@WebServlet(urlPatterns="/login")
+
+
+
+22.什么时候用request,什么时候用response:
+
+request的主要方法有
+	request.setAttribute();
+	request.getAttribute();
+	request.getParameter();
+	request.getServletContext();
+	request.getPathInfo();
+	request.getSession();
+	request.getRequestDispatcher("").forward(request, response);
+
+response的主要方法有
+	response.sendRedirect(arg0);
+	response.encodeRedirectURL(url);
+
+
+
+

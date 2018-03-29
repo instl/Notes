@@ -1,0 +1,108 @@
+﻿1.Mybatis传递参数的3种方式:
+	<1>使用map集合,缺点:代码可读性差.
+	<2>@param注解,最优方案(当参数小于5个)
+	<3>Javabean.直接写类全限定名(当参数大于5个)
+
+2.Mybatis基础:
+
+	<1>Mybatis下面的依赖包:cglib.jar是动态代理包
+
+	<2>Mybatis的日志级别:
+		日志记录器（Logger）的行为是分等级的。
+		具体分为：OFF、 FATAL、ERROR、WARN、INFO、DEBUG、TRACE、ALL
+		
+		Log4j建议只使用四个级别，
+		优先级从高到低分别是 ERROR、WARN、INFO、DEBUG。
+		
+		程序会打印高于或等于所 设置级别的日志，设置的日志等级越高，
+		打印出来的日志就越少。
+		如果设置级别为INFO，则优先级高于等于INFO级别
+		（如：INFO、 WARN、ERROR）的日志信息将可以被输出,
+		小于该级别的如DEBUG将不会被输出。
+	#######开发环境为debug,生产环境为info/error#########
+
+3.实体类的映射(mapper.xml)文件:
+	
+	(1)<select id="findUserById" parameterType="int" resultType="cn.itcast.mybatis.po.User">
+		SELECT * FROM USER WHERE id=#{value}
+		</select>
+
+		id：标识 映射文件中的 sql,将sql语句封装到mappedStatement对象中，
+			所以将id称为statement的id
+	
+		parameterType：指定输入 参数的类型，这里指定int型 
+	
+		#{}表示一个占位符号
+		#{id}：其中的id表示接收输入 的参数，参数名称就是id，
+			如果输入 参数是简单类型，#{}中的参数名可以任意，
+			可以使用value或其它名称
+	
+		resultType：指定sql输出结果 的所映射的java对象类型，
+			select指定resultType表示将单条记录映射成的java对象。
+	
+	
+	(2)<select id="findUserByName" parameterType="java.lang.String" resultType="cn.itcast.mybatis.po.User">
+		SELECT * FROM USER WHERE username LIKE '%${value}%'
+		</select>
+
+		resultType：指定就是单条记录所映射的java对象 类型
+		${}:表示拼接sql串，将接收到参数的内容不加任何修饰拼接在sql中。
+			使用${}拼接sql，引起 sql注入
+		${value}：接收输入 参数的内容，如果传入类型是简单类型，
+			${}中只能使用value值
+
+	(3)<delete id="deleteUser" parameterType="java.lang.Integer">
+		delete from user where id=#{id}
+		</delete>
+		
+		根据id删除用户，需要输入 id值
+
+	(4)<update id="updateUser" parameterType="cn.itcast.mybatis.po.User">
+		update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} 
+		 where id=#{id}
+		</update>
+	
+		需要传入用户的id
+		需要传入用户的更新信息
+		parameterType指定user对象，包括 id和更新信息，注意：id必须存在
+		#{id}：从输入 user对象中获取id属性值
+
+
+4.#{}和${}
+	#{}表示一个占位符号，#{}接收输入参数，类型可以是简单类型，pojo、hashmap。
+		如果接收简单类型，#{}中可以写成value或其它名称。
+	#{}接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性...的方式获取对象属性值。
+
+	${}表示一个拼接符号，会引用sql注入，所以不建议使用${}。
+	${}接收输入参数，类型可以是简单类型，pojo、hashmap。
+		如果接收简单类型，${}中只能写成value。
+	${}接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性...的方式获取对象属性值。
+
+
+5.Mybatis和Hibernate的区别:
+	<1>Hibernate自动ORM框架,sql语句自动生成,修改难度大.
+		应用场景:
+				适用于变化需求不大的中小型项目,如:后台管理系统,erp,orm.oa等.
+
+	<2>Mybatis半自动的ORM框架,sql可优化.
+		应用场景:
+				适用于变化较多的项目,如:互联网项目(京东,淘宝等电商)
+
+
+6.SqlSession的创建过程:
+	<1>通过SqlSessionFactoryBuilder创建会话工厂sqlSessionFactory
+			将SqlSessionFactory当成一个工具类使用.不需要使用单例.
+	<2>通过SqlSessionFactory创建SqlSession,使用单例模式管理SqlSessionFactory,只创建一个实例.
+	<3>SqlSession:
+		SqlSesion是面向用户(程序员)的接口.
+			SqlSession提供了很多方法,如:selectOne(),selectList();
+	*****SqlSession是线程不安全的,因为sqlSession实现类中除了接口(操作数据库)的方法,还有数据域属性.
+		所以,SqlSession应该用在方法体内,定义成局部变量使用.
+
+
+
+
+#########################################################
+11.ORM:Object Relationship Mapping(对象关系映射)
+22.OGNL:Object-Graph Navigation Language(对象图导航语言)
+33.

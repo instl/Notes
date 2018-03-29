@@ -1,0 +1,47 @@
+1.SpringMVC框架原理:
+	前端控制器,处理器映射器,处理器适配器,视图解析器
+
+2.SpringMVC模型层
+	Model层:包含Entity,Dao,Service,Test,Vo(第三方实体类,通常是Mybatis中做查询封装数据用的)
+	Controller层:Servlet
+	View层:JSP
+
+3.SpringMVC
+	SpringMVC是spring框架的一个模块,SpringMVC和Spring可以完美的整合
+	SpringMVC是一个基于mvc的web框架
+
+4.Spring的七大模块:
+	Spring-dao -> Spring JDBC,spring底层的事务管理器
+	Spring-context
+	Spring-core(IoC container) ->spring IoC,spring DI
+	Spring-aop ->配置事务的切面
+	Spring-orm ->Hibernate,JPA,Mybatis
+	Spring-web
+	Spring-webMVC
+
+5.MVC在b/s系统下的应用
+	<1>用户发送请求,请求到达前端控制器(DispatcherServlet)[大C]
+	<2>前端控制器[大C]分析url,请求Handler(程序员写的)[小C]
+	<3>大C调用处理器映射器(HandlerMapping)找到小C
+	<4>大C找到了小C,大C还要调用处理器适配器(HandlerAdapter),去执行小C
+	<5>执行完Handler,会返回一个ModelAndView对象[Spring提供的对象,包含Model和View]
+	<6>大C收到ModelAndView,再请求视图解析器(View resolver)解析,得到逻辑视图(view)
+	<7>大C将得到的视图进行渲染,填充到request域中,接着再转到jsp视图上面
+	<8>大C将渲染好的jsp页面响应给客户端.
+
+	前端控制器(DispatcherServlet):
+		相当于中央处理,不管什么请求都要经过此
+		有了前端控制器,处理器映射器(HandlerMapping),处理器适配器(HandlerAdapter),视图解析器(View resolver) 三者之间没有直接的联系.降低了三者之间的耦合度.
+
+	*******程序员只需要写处理器(Handler),视图(View)[就是逻辑视图:jsp]******
+
+6.SpringMVC中配置:
+	<1>配置Handler(小C)[注意:ItemsController类一定要实现Controller接口]
+		<bean name="/queryItems.action" id="" class=""></bean>
+	<2>配置处理器映射器
+		<bean class="BeanNameUrlHandlerMapping"></bean>
+	<3>配置视图解析器
+		<bean class="InternalResourceViewResolver"></bean>
+	<4>配置处理器适配器
+		<bean class="SimpleControllerHandlerAdapter"></bean>
+ 
