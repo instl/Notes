@@ -100,9 +100,142 @@
 		所以,SqlSession应该用在方法体内,定义成局部变量使用.
 
 
+7.原始dao层的开发问题:
+	<1>dao接口的实现方法中存在大量的耦合代码.开发代码重复,繁琐,不简便.
+	<2>dao接口的实现类里面存在硬编码(statement 的id).不利于开发维护
+	<3>dao接口实现类中调用sqlsession方法时候,传入的类型错误,编译时无法发现,只能到运行时才能发现,
+		不利于程序员开发. 
+
+
+8.Mybatis全局配置(mybatis_config.xml文件)开发规范:
+	<1>xml文件中的namespace等于mapper文件的全限定类名.
+	<2>mybatis全局配置文件中的方法名和mapper.xml中的statement的id一样.
+	<3>mybatis全局配置文件中的方法输入参数类型和mapper.xml中的statement的parameterType指定的类型一致.
+	<4>mybatis全局配置文件中的方法返回值类型和mapper.xml中的statement的resultType指定的类型一致.
+
+
+9.Mybatis-config.xml文件
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE configuration 
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-config.dtd" >
+
+	<configuration>
+		<properties resource="db.properties" />
+
+		<settings>
+			<setting name="logImpl" value="LOG4J" />
+			<setting name="jdbcTypeForNull" value="NULL" />
+			<setting name="cacheEnabled" value="true" />
+		</settings>
+
+		<typeAliases>
+			<package name="com.tz.servlet.entity" />
+		</typeAliases>
+
+		<environments default="oracle_dev">
+			<environment id="oracle_dev">
+				<transactionManager type="JDBC"></transactionManager>
+					<dataSource type="POOLED">
+					<property name="driver" value="${ora_driver}" />
+					<property name="url" value="${ora_url}" />
+					<property name="username" value="${ora_user}" />
+					<property name="password" value="${ora_pwd}" />
+
+				</dataSource>
+			</environment>
+		</environments>
+
+		<mappers>
+			<package name="com.tz.servlet.mapper" />
+		</mappers>
+	</configuration>
+
+	<1>properties属性:
+		<properties resource="db.properties" />
+		将数据库的连接信息写到properties文件中,有利于统一管理,方便其他xml文件利用,减少在xml文件中的硬编码.
+
+			###################注意####################
+			Mybatis加载属性的顺序:
+				(1)在properties元素中定义的属性首先被读取;
+				(2)然后会读取properties元素中的resource或者url加载的属性,它会覆盖已读取的同名属性;
+				(3)最后读取parameterType传递的属性,他会覆盖已经读取的同名的属性.
+
+			建议:不要在properties元素中添加任何属性值,只将属性值定义在properties属性文件中.
+				在properties属性文件中,定义的练级的数据库的属性名要有特殊性,如:jdbc.url;jdbc.drive,jdbc.username和jdbc.password.
+
+	<2>settings全局参数配置:
+		<settings>
+			<setting name="logImpl" value="LOG4J" />
+			<setting name="jdbcTypeForNull" value="NULL" />
+			<setting name="cacheEnabled" value="true" />
+		</settings>
+		需要的就设置,不需要的就不用设置,以免出现奇形怪状的问题.
+		
+
+	<3>typeAliases(别名) [重点]:
+		<typeAliases>
+			<package name="com.tz.servlet.entity" /><!-- 整个package的别名定义 -->
+			<!-- <typeAliases type="com.yuri.mybatis.user" alias="user"/> --><!-- 单个别名定义 -->
+		</typeAliases>
+		别名的需求:
+			在mapper.xml中定义了很多的statement,statement需要parameterType指定输入参数的类型,需要resultType指定的输出结果的映射类型.不使用别名,导致这些属性需				要写很长的值(输入指定类型的全路径).
+		
+	<4>typeHandlers(类型处理器):
+		Mybatis中通过typeHandlers完成jdbc的类型和java类型的转换.一般Mybatis提供的类型处理器已经满足需要.不需要自己定义
+
+
+	<5>mapper(mapper的映射配置):
+		<mappers>
+			<!-- !-- 加载整个package的定义 -->
+			<package name="com.yuri.mybatis.mapper" />
+
+			<!-- 加载单个的xml的文件 -->
+			<mapper resource="mapper/UserMapper.xml"/>
+
+			<!-- 通过mappper接口加载映射文件:
+				要遵循规范:将mapper接口的类名和mapper.xml映射文件保持一致,且在一个package中.
+				这个规范的前提是使用的是mapper代理的方法-->
+			<mapper class="com.yuri.mybatis.mapper.UserMapper"
+		</mappers>
+
+10.输入映射:
+	通过parameterType指定输入参数的类型,类型可以是简单类型,hashmap,自定义的包装类型.
+
+	<!-- 包装类型 -->
+	public class UserQueryVo{
+		//在这里包装所需要的条件
+		
+		//用户查询条件
+		private UserCustom userCustom;
+
+		//还可以包装其他的查询条件,如:订单,商品
+
+		也要添加getter和setter方法
+	}
+
+	<!-- 用户的扩展类 -->
+	public class UserCustom extends User{
+		//可以扩展用户的信息
+
+
+	}
+
+
+
+
+
+		
+
+
+
+
+
+
+
 
 
 #########################################################
 11.ORM:Object Relationship Mapping(对象关系映射)
 22.OGNL:Object-Graph Navigation Language(对象图导航语言)
-33.
+33.Vo:Value Object(值对象)
