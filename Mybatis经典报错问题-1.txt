@@ -1,59 +1,46 @@
-MybatisÒì³£There is no getter for property named 'XXX' in 'class java.lang.String'
+MybatisæŠ¥é”™æç¤º:
+                                 There is no getter for property named 'XXX' in 'class java.lang.String'
 
-Mybatis°æ±¾:mybatis-3.0.6.jar
+Mybatisç‰ˆæœ¬:
+                                mybatis-3.0.6.jar
 
-1.µ±Èë²ÎÎª stringÀàĞÍÊ± (°üÀ¨java.lang.String.) 
+1.å½“å…¥å‚ä¸º stringç±»å‹æ—¶ (åŒ…æ‹¬java.lang.String.) æˆ‘ä»¬ä½¿ç”¨#{xxx}å¼•å…¥å‚æ•°.ä¼šæŠ›å¼‚å¸¸There is no getter for property named 'XXX' in 'class java.lang.String'
 
-ÎÒÃÇÊ¹ÓÃ#{xxx}ÒıÈë²ÎÊı.»áÅ×Òì³£There is no getter for property named 'XXX' in 'class java.lang.String'
-¸´ÖÆ´úÂë
+         ä»£ç ç‰‡æ®µå¦‚ä¸‹:
+          <select id="getBookingCount" resultType="int" parameterType="string">
 
-<select id="getBookingCount" resultType="int" parameterType="string">
+          select count(*) from TB_EMPC_BOOKING_ORDER T
 
-select count(*) from TB_EMPC_BOOKING_ORDER T
+          where (t.state = '1' or t.state = '2')
 
-where (t.state = '1' or t.state = '2')
+          and t.appointmenttime = #{state}
 
-and t.appointmenttime = #{state}
-
-</select>
-
-¸´ÖÆ´úÂë
+          </select>
 
  
 
-2.½â¾ö·½·¨Ò»:°Ñ#{xxx}ĞŞ¸ÄÎª #{_parameter} ¼´¿É
-¸´ÖÆ´úÂë
+2.è§£å†³æ–¹æ³•ä¸€:æŠŠ#{xxx}ä¿®æ”¹ä¸º #{_parameter} å°±å¥½äº†
 
-<select id="getBookingCount" resultType="int" parameterType="string">
+          <select id="getBookingCount" resultType="int" parameterType="string">
 
-select count(*) from TB_EMPC_BOOKING_ORDER T
+         select count(*) from TB_EMPC_BOOKING_ORDER T
 
-where (t.state = '1' or t.state = '2')
+         where (t.state = '1' or t.state = '2')
 
-and t.appointmenttime = #{_parameter}
+         and t.appointmenttime = #{_parameter}
 
-</select>
+         </select>
 
-¸´ÖÆ´úÂë
 
- 
+3.è§£å†³æ–¹æ³•äºŒ:å¯ä»¥åœ¨æ–¹æ³•ä¸­æå‰å®šä¹‰:
 
- 
+         public int  methodName(@Param(value="state") String state ){
 
-3.½â¾ö·½·¨¶ş:¿ÉÒÔÔÚ·½·¨ÖĞÌáÇ°¶¨Òå:
+ã€€ã€€         ...
 
-public int  methodName(@Param(value="state") String state ){
-
-¡¡¡¡...
-
-}
+         }
 
  
 
- 
+4.åŸå› :Mybatisé»˜è®¤é‡‡ç”¨ONGLè§£æå‚æ•°ï¼Œæ‰€ä»¥ä¼šè‡ªåŠ¨é‡‡ç”¨å¯¹è±¡æ ‘çš„å½¢å¼å– string.xxx å€¼ï¼Œå¦‚æœæ²¡åœ¨åœ¨æ–¹æ³•ä¸­å®šä¹‰,åˆ™ä¼šæŠ›å¼‚å¸¸æŠ¥é”™ã€‚
 
-4.Ô­Òò:MybatisÄ¬ÈÏ²ÉÓÃONGL½âÎö²ÎÊı£¬ËùÒÔ»á×Ô¶¯²ÉÓÃ¶ÔÏóÊ÷µÄĞÎÊ½È¡ string.xxx Öµ£¬Èç¹ûÃ»ÔÚÔÚ·½·¨ÖĞ¶¨Òå,Ôò»áÅ×Òì³£±¨´í¡£
-
- 
-
-5.ÆäËûmybatisµÄ°æ±¾²»ÖªµÀÓĞÃ»ÓĞÕâ¸öÎÊÌâ,ÔİÊ±Ã»ÊÔ¹ı.
