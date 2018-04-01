@@ -1,0 +1,59 @@
+Mybatis异常There is no getter for property named 'XXX' in 'class java.lang.String'
+
+Mybatis版本:mybatis-3.0.6.jar
+
+1.当入参为 string类型时 (包括java.lang.String.) 
+
+我们使用#{xxx}引入参数.会抛异常There is no getter for property named 'XXX' in 'class java.lang.String'
+复制代码
+
+<select id="getBookingCount" resultType="int" parameterType="string">
+
+select count(*) from TB_EMPC_BOOKING_ORDER T
+
+where (t.state = '1' or t.state = '2')
+
+and t.appointmenttime = #{state}
+
+</select>
+
+复制代码
+
+ 
+
+2.解决方法一:把#{xxx}修改为 #{_parameter} 即可
+复制代码
+
+<select id="getBookingCount" resultType="int" parameterType="string">
+
+select count(*) from TB_EMPC_BOOKING_ORDER T
+
+where (t.state = '1' or t.state = '2')
+
+and t.appointmenttime = #{_parameter}
+
+</select>
+
+复制代码
+
+ 
+
+ 
+
+3.解决方法二:可以在方法中提前定义:
+
+public int  methodName(@Param(value="state") String state ){
+
+　　...
+
+}
+
+ 
+
+ 
+
+4.原因:Mybatis默认采用ONGL解析参数，所以会自动采用对象树的形式取 string.xxx 值，如果没在在方法中定义,则会抛异常报错。
+
+ 
+
+5.其他mybatis的版本不知道有没有这个问题,暂时没试过.
