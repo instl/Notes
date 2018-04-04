@@ -480,8 +480,34 @@
 			c_orders.user_id = c_user.id;
 
 
-18.使用resultMap关联查询一对一:
-			
+18.使用resultMap关联查询:
+
+	<!-- xml文件的resultMap写法 -->
+		<mapper namespace="com.yuri.mybatis.entity.OrdersMapperCustom">
+
+			<!-- 主要的是查询Orders,并且附带把关联用户的resultMap映射到Orders中 -->
+			<resultMap type="orders" id="OrderUserResultMap">
+				<!-- 1.配置映射的orders信息 -->
+					<id column="id" property="id"/>
+					<result column="user_id" property="userId"/>
+					<result column="number" property="number"/>
+					<result column="createtime" property="createtime"/>
+					<result column="note" property="note"/>
+				
+				<!-- 2.配置映射的关联的user信息 -->
+				<!-- association:用于映射关联查询单个对象的信息
+					 property:将要关联查询的用户信息映射到Orders中的哪个属性
+					 javaType:映射到user的哪个属性 -->
+				<association property="user" javaType="user">
+					<!-- id:关联查询user的唯一标识
+						 column:指定唯一标识用户信息的列 -->
+					<id column="user_id" property="id"/>
+					<result column="username" property="username"/>
+					<result column="gender" property="gender"/>
+					<result column="address" property="address"/>
+				</association>
+			</resultMap>
+		</mapper>		
 	
 
 
