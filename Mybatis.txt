@@ -542,8 +542,78 @@
 				c_orderdetail
 			where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id
 
+		(3)在orders中添加list订单明细属性
+
+		(4)OrdersUserResultMap.xml 以及 resultMap定义:
+
+			<!-- orders以及orderdetail的resultMap -->
+				<resultMap type="orders" id="OrdersAndOrderDetailResultMap">
+					
+					<!-- 1.订单信息 -->
+					<id column="id" property="id"/>
+					<result column="user_id" property="userId"/>
+					<result column="number" property="number"/>
+					<result column="createtime" property="createtime"/>
+					<result column="note" property="note"/>
+
+					<!-- 2.用户信息 -->
+						<association property="user" javaType="user">
+							<id column="user_id" property="id"/>
+							<result column="username" property="username"/>
+							<result column="gender" property="gender"/>
+							<result column="address" property="address"/>
+						</association>
+					
+					<!-- 3.订单明细信息:
+							一个订单关联查出多条明细,使用collection
+							collection:关联查询到多条记录映射到集合中
+							ofType:指定映射到list集合属性中pojo的类型 -->
+						<collection property="orderdetails" ofType="orderdetails">
+							<id column="orderdetail_id" property="id"/>
+							<result column="items_id" property="ItemsId"/>
+							<result column="items_num" property="ItemsNum"/>
+							<result column="orders_id" property="OrdersId"/>
+						</collection>
+				</resultMap>		
 
 
+				<!-- sql语句 -->
+				<select id="findOrdersAndOrderDetailResultMap" resultMap="OrdersAndOrderDetailResultMap">
+						select
+						c_orders.*,
+						c_user.username,
+						c_user.gender,
+						c_user.address,
+						c_orderdetail.id orderdetail_id,
+						c_orderdetail.items_id,
+						c_orderdetail.items_num,
+						c_orderdetail.orders_id
+					from
+						c_orders,
+						c_user,
+						c_orderdetail
+					where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id
+				</select>
+
+				<!-- 也可以用继承的方法简化代码 -->
+				<resultMap type="orders" id="OrdersAndOrderDetailResultMap" extends="OrdersUserResultMap">
+					<!-- 1.订单信息 -->
+					<!-- 2.用户信息 -->					
+					<!-- 3.订单明细信息:
+							一个订单关联查出多条明细,使用collection
+							collection:关联查询到多条记录映射到集合中
+							ofType:指定映射到list集合属性中pojo的类型 -->
+						<collection property="orderdetails" ofType="orderdetails">
+							<id column="orderdetail_id" property="id"/>
+							<result column="items_id" property="ItemsId"/>
+							<result column="items_num" property="ItemsNum"/>
+							<result column="orders_id" property="OrdersId"/>
+						</collection>
+				</resultMap>
+
+20.resultMap和collection小结:
+	mybatis使用resultMap的collection对关联查询的多条记录映射到一个list集合属性中.
+		
 
 
 
