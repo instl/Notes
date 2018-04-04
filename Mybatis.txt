@@ -480,9 +480,9 @@
 			c_orders.user_id = c_user.id;
 
 
-18.使用resultMap关联查询:
-
-	<!-- xml文件的resultMap写法 -->
+18.使用resultMap关联查询(一对一):
+			
+		<!-- xml文件的resultMap写法 -->
 		<mapper namespace="com.yuri.mybatis.entity.OrdersMapperCustom">
 
 			<!-- 主要的是查询Orders,并且附带把关联用户的resultMap映射到Orders中 -->
@@ -507,18 +507,40 @@
 					<result column="address" property="address"/>
 				</association>
 			</resultMap>
-		</mapper>		
-	
+		</mapper>
 
 
+	实现一对一的查询:
+		(1)resultType:
+				使用resultType实现较为简单,如果pojo中没有包括查询出来的列名,就需要增加对应的属性.
+				如果没有查询结果的特殊要求,建议使用resultType.
+		(2)resultMap:
+				需要单独的定义resultMap,有点麻烦,如果对查询的结果有特殊的要求,就使用resultMap.
+				resultMap可以实现延迟加载,resultType无法实现延迟加载.
+		
 
+19.高级查询(一对多):
+		(1)需求:
+			查询订单以及订单明细的信息.
 
+		(2)SQL语句:
+			确定主查询表:订单表
+			确定关联查询表:订单明细表
 
-
-
-
-
-
+		<!-- user,orders,orderitems 三张表的关系 -->
+			select
+				c_orders.*,
+				c_user.username,
+				c_user.gender,
+				c_user.address,
+				c_orderdetail.items_id,
+				c_orderdetail.items_num,
+				c_orderdetail.orders_id
+			from
+				c_orders,
+				c_user,
+				c_orderdetail
+			where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id
 
 
 
