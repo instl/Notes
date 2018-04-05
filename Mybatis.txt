@@ -651,6 +651,7 @@
 					orderDetails.将订单的明细映射到orderDetails.
 			<3>在OrderDetail中添加Items属性.将订单明细所对应的商品映射到Items.
 
+		
 		(4)mapper.xml
 			<!-- mybatis高级查询(多对多) -->
 			<!-- 查询用户以及购买的商品 -->
@@ -668,18 +669,27 @@
 						<result column="number" property="number"/>
 						<result column="createtime" property="createtime"/>
 						<result column="note" property="note"/>
-							<!-- 订单明细
-						 一个订单包括多个明细-->
+							
+							<!-- 订单明细:
+						 		一个订单包括多个明细-->
 						 <collection property="orderDetails" ofType="orderDetails">
 						 	<id column="orderdetail_id" property="id"/>
 						 	<result column="items_id" property="itemsId"/>
 						 	<result column="items_num" property="itemsNum"/>
 						 	<result column="orders_id" property="ordersId"/>
+
+						 	<!-- 商品信息:
+						 	 	一个订单的明细对应一个商品-->
+						 	 	<association property="items" javaType="items">
+								 	<id column="items_id" property="id"/>
+								 	<result column="items_name" property="name"/>
+								 	<result column="items_detail" property="detail"/>
+								 	<result column="items_price" property="price"/>
+								 </association>
 						 </collection>
 					</collection>
-
-
 			</resultMap>
+
 
 
 
