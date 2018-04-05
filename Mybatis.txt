@@ -614,7 +614,35 @@
 20.resultMap和collection小结:
 	mybatis使用resultMap的collection对关联查询的多条记录映射到一个list集合属性中.
 		
+		
+		
+21.Mybatis 高级查询(多对多):
+		(1)需求:
+				查询用户以及用户购买的商品信息.
 
+		(2)sql语句:
+				查询主表:用户表
+				关联表:因为用户和商品没有直接关联,通过订单和订单明细进行关联,所以关联表:
+						orders,orderdetail,items
+
+			select
+				c_orders.*,
+				c_user.username,
+				c_user.gender,
+				c_user.address,
+				c_orderdetail.id orderdetail_id,
+				c_orderdetail.items_id,
+				c_orderdetail.items_num,
+				c_orderdetail.orders_id,
+				c_items.name items_name,
+				c_items.detail items_detail,
+				c_items.price items_price
+			from
+				c_orders,
+				c_user,
+				c_orderdetail,
+				c_items
+			where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id and c_orderdetail.items_id = c_items.id
 
 
 
