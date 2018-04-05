@@ -644,6 +644,70 @@
 				c_items
 			where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id and c_orderdetail.items_id = c_items.id
 
+		(3)映射思路:
+			将用户信息映射到user中.
+			<1>在user类中添加订单列表属性List<Orders> ordersList.将用户创建的订单映射到orderList.
+			<2>在Orders中添加订单明细列表属性List<OrderDetail>,
+					orderDetails.将订单的明细映射到orderDetails.
+			<3>在OrderDetail中添加Items属性.将订单明细所对应的商品映射到Items.
+
+		(4)mapper.xml
+			<!-- mybatis高级查询(多对多) -->
+			<!-- 查询用户以及购买的商品 -->
+			<resultMap type="user" id="UserAndItemsResultMap">
+				<id column="user_id" property="id"/>
+				<result column="username" property="username"/>
+				<result column="gender" property="gender"/>
+				<result column="address" property="address"/>
+
+				<!-- 订单信息:
+					一个用户对应多个订单,使用collection -->
+					<collection property="orderList" ofType="orders">
+						<id column="id" property="id"/>
+						<result column="user_id" property="userId"/>
+						<result column="number" property="number"/>
+						<result column="createtime" property="createtime"/>
+						<result column="note" property="note"/>
+							<!-- 订单明细
+						 一个订单包括多个明细-->
+						 <collection property="orderDetails" ofType="orderDetails">
+						 	<id column="orderdetail_id" property="id"/>
+						 	<result column="items_id" property="itemsId"/>
+						 	<result column="items_num" property="itemsNum"/>
+						 	<result column="orders_id" property="ordersId"/>
+						 </collection>
+					</collection>
+
+
+			</resultMap>
+
+
+
+			<!-- 查询用户以及购买的商品信息 -->
+			<select id="findUserAndItemsResultMap" resultMap="UserAndItemsResultMap">
+					select
+					c_orders.*,
+					c_user.username,
+					c_user.gender,
+					c_user.address,
+					c_orderdetail.id orderdetail_id,
+					c_orderdetail.items_id,
+					c_orderdetail.items_num,
+					c_orderdetail.orders_id,
+					c_items.name items_name,
+					c_items.detail items_detail,
+					c_items.price items_price
+				from
+					c_orders,
+					c_user,
+					c_orderdetail,
+					c_items
+				where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id and c_orderdetail.items_id = c_items.id
+			</select>
+		
+		(5)resultMap的定义
+
+		(6)mapper.java
 
 
 	
