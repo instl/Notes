@@ -651,8 +651,7 @@
 					orderDetails.将订单的明细映射到orderDetails.
 			<3>在OrderDetail中添加Items属性.将订单明细所对应的商品映射到Items.
 
-		
-		(4)mapper.xml
+		(4)mapper.xml(resultMap的定义)
 			<!-- mybatis高级查询(多对多) -->
 			<!-- 查询用户以及购买的商品 -->
 			<resultMap type="user" id="UserAndItemsResultMap">
@@ -692,7 +691,6 @@
 
 
 
-
 			<!-- 查询用户以及购买的商品信息 -->
 			<select id="findUserAndItemsResultMap" resultMap="UserAndItemsResultMap">
 					select
@@ -712,12 +710,16 @@
 					c_user,
 					c_orderdetail,
 					c_items
-				where c_orders.user_id = c_user.id and c_orderdetail.orders_id = c_orders.id and c_orderdetail.items_id = c_items.id
+				where 
+					c_orders.user_id = c_user.id and 
+					c_orderdetail.orders_id = c_orders.id and 
+					c_orderdetail.items_id = c_items.id
 			</select>
 		
-		(5)resultMap的定义
+		
 
 		(6)mapper.java
+
 
 
 	
