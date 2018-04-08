@@ -791,7 +791,7 @@
 		</resultMap>								
 
 		<!-- 查询订单关联查询用户,用户信息需要延迟加载 -->
-		<select id="findOrderUserLazyLoading" resultMap="">
+		<select id="findOrderUserLazyLoading" resultMap="OrderUserLazyLoadingResultMap">
 			select * from orders
 		</select>
 
