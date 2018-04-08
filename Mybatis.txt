@@ -808,6 +808,18 @@
 			select * from orders
 		</select>
 
+		<!-- mapper.java -->
+		<!-- 查询订单关联查询用户,用户信息是延迟加载 -->
+		List<Orders> findOrdersUserLazyLoading()throws Exception;
+
+
+
+		<4>association延迟加载流程:
+				(1)执行findOrdersUserLazyLoading.
+				(2)需要查询用户的时候,再去执行findUserById.
+
+			中间的关联,是通过resultMap的定义将延迟加载执行配置起来.
+
 
 	
 
