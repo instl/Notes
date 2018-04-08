@@ -770,8 +770,18 @@
 			(1)只查询订单信息:
 				select* from orders
 				在查询订单的statement中使用association去延迟加载下面的statement(关联查询用户信息)
+				<select id="findOrderUserLazyLoading" 
+						resultMap="OrderUserLazyLoadingResultMap">
+					select * from orders
+				</select>
+
+
 			(2)关联查询用户信息:
 				通过上面查询到的订单信息中user_id去关联查询用户信息.
+				使用UserMapper.xml中的findUserById
+				<select id="findUserById" parameterType="int" resultType="user">
+					select * from user where id=#{value}
+				</select>
 
 
 		<!-- 延迟加载的resultMap -->
@@ -787,8 +797,11 @@
 						select:指定需要延加载的sql语句
 						column:订单信息中关联用户信息查询的列  -->
 				<!-- 使用association中的select指定的延迟加载去执行的statement的id -->
-				<association property="user" javaType="user" select="findUserById" column="user_id"></association>
-		</resultMap>								
+				<association property="user" javaType="user" 
+							select="findUserById" column="user_id">
+				</association>
+
+		</resultMap>																								
 
 		<!-- 查询订单关联查询用户,用户信息需要延迟加载 -->
 		<select id="findOrderUserLazyLoading" resultMap="OrderUserLazyLoadingResultMap">
