@@ -1,55 +1,141 @@
-1.Êı¾İ¿âµÄÊı¾İÀàĞÍ:
-	<1>Êı×ÖÀàĞÍ,¿ÉÒÔ×öËùÓĞµÄÊıÑ§ÔËËã
-	<2>×Ö·ûĞÍ,¿ÉÒÔ×öÆ´½ÓµÄÔËËã
-	<3>ÈÕÆÚÀàĞÍ,¿ÉÒÔ×ö¼Ó¼õÔËËã
-	<4>´óÊı¾İÀàĞÍ(²»Ö§³Ö²é¿´Êı¾İ½á¹û)
+å‡†å¤‡å…¥é—¨ç¯‡:
 
-2.Êı¾İ¿âSQLµÄ5ÖÖÖ¸Áî
-	<1>.DCL(Data Control Language)Êı¾İ¿ØÖÆÓï¾ä:
+	--è¿›å…¥sqlplus cmd ç•Œé¢
+		sqlplus
+
+
+	--åˆ›å»º ç”¨æˆ·å å¯†ç 
+		create user jsd identified by jsd;
+
+	--åœ¨systemè´¦æˆ·ä¸‹æˆæƒå…¶ä»–ç”¨æˆ· è¿æ¥å’Œ
+		grant connect,resource to jsd;
+
+	--è¿æ¥ jsd æ™®é€šç”¨æˆ·,ç¬¬äºŒè¡Œè¾“å…¥å¯†ç 
+		conn jsd
+		jsd
+
+
+	--å¿˜è®°äº†systemè´¦å·,è§£å†³åŠæ³•
+
+		--1.1ç™»å½•ä¸»ç®¡ç†å‘˜è´¦æˆ·,æ¯”systemè´¦å·ç­‰çº§è¿˜è¦é«˜
+				sqlplus "/as sysdba";
+		--1.2ä¿®æ”¹systemå¯†ç 
+				alter user system identified by å¯†ç ;
+
+	--åˆ é™¤ç”¨æˆ·,<åªæœ‰ä¸Šçº§æ‰èƒ½æ“ä½œä¸‹çº§,åŒçº§ä¸è¡Œ>
+		drop user ç”¨æˆ·å;
+
+	--é”ä¸Šè´¦å·,è§£é”è´¦å·
+	--éœ€è¦é«˜æƒé™è´¦æˆ·æ“ä½œ
+		alter user ç”¨æˆ·å account lock;
+		alter user ç”¨æˆ·å account unlock;
+
+
+	--è®¾ç½®è¡Œç¼“å†²
+		set linesize 1000
+
+	--è®¾ç½®åˆ—ç¼“å†²
+		set pagesize 1000
+
+	--æŸ¥è¯¢ç³»ç»Ÿæ—¥æœŸ
+		select sysdate from dual;
+
+	--è®¾ç½®ç³»ç»Ÿæ—¥æœŸçš„æ˜¾ç¤ºæ•ˆæœ:å¹´-æœˆ-æ—¥ æ—¶:åˆ†:ç§’ æ˜ŸæœŸ
+		alter session set nls_date_format = 'yyyy-mm-dd HH24:mi:ss day';
+
+	--è®¾ç½®ç³»ç»Ÿæ—¥æœŸçš„æ˜¾ç¤ºæ•ˆæœ:å¹´-æœˆ-æ—¥
+		alter session set nls_date_format = 'yyyy-mm-dd';
+
+	--åœ¨empè¡¨æ ¼é‡Œé¢è¯»å–æ‰€æœ‰è®°å½•
+		select * from emp;
+
+	--Windows è®¾ç½®è®¡åˆ’ä»»åŠ¡
+		SCHTASKS /Create /SC DAILY /TN hibernate_pc /TR "shutdown -s" /ST 00ï¼š00
+
+	--Windows è®¡åˆ’ä»»åŠ¡æŸ¥è¯¢
+		SCHTASKS /delete /?
+
+	--Oracleä¼ä¸šçº§å»ºè¡¨è¯­å¥:
+	--å°†çº¦æŸæ”¾åœ¨æ‹¬å·å¤–
+
+		create table tbl_user(
+			id 		number(10),
+			username 	varchar2(25),
+			password 	varchar2(10)
+		);
+
+			alter table tbl_user add constraint tbl_user_id_pk primary key(id);
+			alter table tbl_user add constraint tbl_user_un_nn check(username is not null);
+			alter table tbl_user add constraint tbl_user_un_uq unique(username);
+			alter table tbl_user add constraint tbl_user_pwd_nn check(password is not null);
+
+
+	--æ·»åŠ å¤–é”®çº¦æŸ
+
+	--è¯­æ³•ï¼š
+		alter table è¡¨1-è¡¨å
+		add constraint å¤–é”®åç§°(ä¸€èˆ¬å¤–é”®åç§°ä¸ºâ€fK_â€å¼€å¤´) foreign key (è¦è®¾ä¸ºå¤–é”®çš„åˆ—å)
+		references è¡¨2-è¡¨å(ä¸å“ªä¸ªè¡¨æœ‰å…³è”) (è¡¨2ä¸­è¯¥åˆ—åˆ—å);
+
+		alter table T_Result
+		add constraint fk_studentId2 foreign key (studentId)
+		references T_Student (studentId);
+
+		alter table t_CardInfo
+		add constraint fk_customerID foreign key(customerid)
+		references T_UserInfo (customerid);
+
+
+####################################################################################################################################
+
+åŸºæœ¬çŸ¥è¯†ç‚¹:
+
+1.æ•°æ®åº“çš„æ•°æ®ç±»å‹:
+	<1>æ•°å­—ç±»å‹,å¯ä»¥åšæ‰€æœ‰çš„æ•°å­¦è¿ç®—
+	<2>å­—ç¬¦å‹,å¯ä»¥åšæ‹¼æ¥çš„è¿ç®—
+	<3>æ—¥æœŸç±»å‹,å¯ä»¥åšåŠ å‡è¿ç®—
+	<4>å¤§æ•°æ®ç±»å‹(ä¸æ”¯æŒæŸ¥çœ‹æ•°æ®ç»“æœ)
+
+2.æ•°æ®åº“SQLçš„5ç§æŒ‡ä»¤
+	<1>.DCL(Data Control Language)æ•°æ®æ§åˆ¶è¯­å¥:
 		grant,revoke...
 
-	<2>.DDL(Data Definition Language)Êı¾İ¶¨ÒåÓï¾ä:
+	<2>.DDL(Data Definition Language)æ•°æ®å®šä¹‰è¯­å¥:
 		create,alter,drop,truncate,comment on,rename to...
 
-	<3>.DML(Data Manipulating Language)Êı¾İ²Ù×İÓï¾ä:
+	<3>.DML(Data Manipulating Language)æ•°æ®æ“çºµè¯­å¥:
 		insert,update,delete
 
-	<4>.DQL(Date Query Language)Êı¾İ²éÑ¯Óï¾ä:
+	<4>.DQL(Date Query Language)æ•°æ®æŸ¥è¯¢è¯­å¥:
 		select
 
-	<5>.DTL(Data Transaction Language)Êı¾İÊÂÎñÓï¾ä:
+	<5>.DTL(Data Transaction Language)æ•°æ®äº‹åŠ¡è¯­å¥:
 		commit,rollback,savepoint
 
-3.ÅÅĞò×Ö¾ä:
-	order by ÁĞÃû asc(ÉıĞò,Ä¬ÈÏ¿É²»Ğ´) | desc (½µĞò)
+3.æ’åºå­—å¥:
+	order by åˆ—å asc(å‡åº,é»˜è®¤å¯ä¸å†™) | desc (é™åº)
 	
-	--²éÑ¯³öÖ°³ÆÖĞ´øVPµÄÔ±¹¤Ãû×Ö,¹¤×Ê,²¢°´¹¤×ÊµÄ½µĞòÅÅĞò
+	--æŸ¥è¯¢å‡ºèŒç§°ä¸­å¸¦VPçš„å‘˜å·¥åå­—,å·¥èµ„,å¹¶æŒ‰å·¥èµ„çš„é™åºæ’åº
 		select first_Name,salary,title from s_emp
 		where title like '%VP%' order by 2 desc;
 
-4.Ìí¼ÓÔ¼ÊøµÄ2ÖÖ·½·¨:
-	<1>ÁĞ¼¶Óï·¨Ìí¼Ó--±ß¶¨ÒåÁĞ,±ßÌí¼ÓÔ¼Êø
-	<2>±í¼¶Óï·¨Ìí¼Ó--ÏÈ¶¨ÒåÁĞ,È»ºóÔÙÌí¼ÓÔ¼Êø(ÍÆ¼öÊ¹ÓÃ)
+4.æ·»åŠ çº¦æŸçš„2ç§æ–¹æ³•:
+	<1>åˆ—çº§è¯­æ³•æ·»åŠ --è¾¹å®šä¹‰åˆ—,è¾¹æ·»åŠ çº¦æŸ
+	<2>è¡¨çº§è¯­æ³•æ·»åŠ --å…ˆå®šä¹‰åˆ—,ç„¶åå†æ·»åŠ çº¦æŸ(æ¨èä½¿ç”¨)
 
-5.ÊÂÎñµÄËÄ´óÌØĞÔ(ACID):
-	atomic,Ô­×ÓĞÔ,ÊÂÎñÊÇ²»¿ÉÔÙ·Ö¸îµÄ,ÒªÃ´Í¬Ê±³É¹¦,ÒªÃ´Í¬Ê±Ê§°Ü
-	consistency,Ò»ÖÂĞÔ,ÊÂÎñÒ»µ©½áÊø,ÄÚ´æÖĞµÄÊı¾İºÍÊı¾İ¿âÖĞµÄÊı¾İÊÇ±£³ÖÒ»ÖÂµÄ
-	isolation,¸ôÀëĞÔ,ÊÂÎñÖ®¼ä»¥²»¸ÉÈÅ,Ò»¸öÊÂÎñµÄ½áÊøÒâÎ¶×ÅÏÂÒ»¸öÊÂÎñµÄ¿ªÆô
-	duration,³Ö¾ÃĞÔ,ÊÂÎñÒ»µ©Ìá½»,ÔòÊı¾İ³Ö¾Ã»¯µ½Êı¾İ¿âÖĞ,ÓÀ¾Ã±£´æ
+5.äº‹åŠ¡çš„å››å¤§ç‰¹æ€§(ACID):
+	atomic,åŸå­æ€§,äº‹åŠ¡æ˜¯ä¸å¯å†åˆ†å‰²çš„,è¦ä¹ˆåŒæ—¶æˆåŠŸ,è¦ä¹ˆåŒæ—¶å¤±è´¥
+	consistency,ä¸€è‡´æ€§,äº‹åŠ¡ä¸€æ—¦ç»“æŸ,å†…å­˜ä¸­çš„æ•°æ®å’Œæ•°æ®åº“ä¸­çš„æ•°æ®æ˜¯ä¿æŒä¸€è‡´çš„
+	isolation,éš”ç¦»æ€§,äº‹åŠ¡ä¹‹é—´äº’ä¸å¹²æ‰°,ä¸€ä¸ªäº‹åŠ¡çš„ç»“æŸæ„å‘³ç€ä¸‹ä¸€ä¸ªäº‹åŠ¡çš„å¼€å¯
+	duration,æŒä¹…æ€§,äº‹åŠ¡ä¸€æ—¦æäº¤,åˆ™æ•°æ®æŒä¹…åŒ–åˆ°æ•°æ®åº“ä¸­,æ°¸ä¹…ä¿å­˜
 
-6.¶àÊÂÎñµÄ²¢·¢´¦Àí»úÖÆ:
+6.å¤šäº‹åŠ¡çš„å¹¶å‘å¤„ç†æœºåˆ¶:
 
-	Ô­Òò:¶à¸öÊÂÎñÍ¬Ê±²Ù×÷Ò»¸ö±íÖĞµÄÍ¬Ò»ĞĞÊı¾İ,Èç¹ûÕâĞ©²Ù×÷ÊÇ
-     	ĞŞ¸Ä²Ù×÷µÄ»°,¾Í»á²úÉú²¢·¢ÎÊÌâ,Èç¹û²»´¦Àí,Ôò»áÔì³ÉÊı
-     	¾İ²»Ò»ÖÂµÄÇé¿ö.
+	åŸå› :å¤šä¸ªäº‹åŠ¡åŒæ—¶æ“ä½œä¸€ä¸ªè¡¨ä¸­çš„åŒä¸€è¡Œæ•°æ®,å¦‚æœè¿™äº›æ“ä½œæ˜¯
+     	ä¿®æ”¹æ“ä½œçš„è¯,å°±ä¼šäº§ç”Ÿå¹¶å‘é—®é¢˜,å¦‚æœä¸å¤„ç†,åˆ™ä¼šé€ æˆæ•°
+     	æ®ä¸ä¸€è‡´çš„æƒ…å†µ.
 
-7.¸ß¼¶²éÑ¯:
-	<1>¹ØÁª²éÑ¯
-		select e.first_name,d.name from s_emp e,s_dept d
-		where e.dept_id=d.id;
-		
-		select e.first_name,d.name from s_emp e
-		join s_dept d on e.dept_id=d.id;
 
-	<2>
+
+
 
