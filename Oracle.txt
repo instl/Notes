@@ -88,7 +88,7 @@
 
 2.Oracle的语法:
 
---原始数据
+##原始数据
 SQL> select first_name,title,salary,commission_pct from s_emp;
 
 FIRST_NAME                TITLE                         SALARY COMMISSION_PCT
@@ -121,7 +121,7 @@ Sylvie                    Stock Clerk                     1100
 
 已选择25行。
 
---使用vnl(a,0)排空查询
+##使用vnl(a,0)排空查询
 SQL> select first_name,title,salary,salary+salary*nvl(commission_pct,0) year from s_emp;
 
 FIRST_NAME                TITLE                         SALARY       YEAR
@@ -154,7 +154,86 @@ Sylvie                    Stock Clerk                     1100       1100
 
 已选择25行。
 
+##
+	别名:
+		last_name as "FamilyName"和first_name "GivenName"的功能一样.
+		salary money 这个别名里面不能有关键字,空格.
+		别名也不能为数字.
 
+##
+
+--查询奖金为不是null的员工
+
+SQL> select last_name as "FamilyName", 
+	   first_name "GivenName",
+	   salary money 
+	from s_emp 
+	where commission_pct is not null;
+
+
+FamilyName                GivenName                      MONEY
+------------------------- ------------------------- ----------
+Magee                     Colin                           1400
+Giljum                    Henry                           1490
+Sedeghi                   Yasmin                          1515
+Nguyen                    Mai                             1525
+Dumas                     Andre                           1450
+
+已选择5行。
+
+
+
+##去除重复
+SQL> select dept_id from s_emp;
+
+   DEPT_ID
+----------
+        50
+        41
+        31
+        10
+        50
+        41
+        42
+        43
+        44
+        45
+        31
+        32
+        33
+        34
+        35
+        41
+        41
+        42
+        42
+        43
+        43
+        44
+        34
+        45
+        45
+
+已选择25行。
+
+SQL> select distinct dept_id from s_emp;
+
+   DEPT_ID
+----------
+        42
+        43
+        34
+        44
+        31
+        32
+        35
+        50
+        41
+        45
+        33
+        10
+
+已选择12行。
 
 
 
