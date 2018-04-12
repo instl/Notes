@@ -86,6 +86,87 @@
 		references T_UserInfo (customerid);
 
 
+2.Oracle的语法:
+
+--原始数据
+SQL> select first_name,title,salary,commission_pct from s_emp;
+
+FIRST_NAME                TITLE                         SALARY COMMISSION_PCT
+------------------------- ------------------------- ---------- --------------
+Carmen                    President                       2500
+LaDoris                   VP, Operations                  1450
+Midori                    VP, Sales                       1400
+Mark                      VP, Finance                     1450
+Audry                     VP, Administration              1550
+Molly                     Warehouse Manager               1200
+Roberta                   Warehouse Manager               1250
+Ben                       Warehouse Manager               1100
+Antoinette                Warehouse Manager               1300
+Marta                     Warehouse Manager               1307
+Colin                     Sales Representative            1400             10
+Henry                     Sales Representative            1490           12.5
+Yasmin                    Sales Representative            1515             10
+Mai                       Sales Representative            1525             15
+Andre                     Sales Representative            1450           17.5
+Elena                     Stock Clerk                     1400
+George                    Stock Clerk                      940
+Akira                     Stock Clerk                     1200
+Vikram                    Stock Clerk                      795
+Chad                      Stock Clerk                      750
+Alexander                 Stock Clerk                      850
+Eddie                     Stock Clerk                      800
+Radha                     Stock Clerk                      795
+Bela                      Stock Clerk                      860
+Sylvie                    Stock Clerk                     1100
+
+已选择25行。
+
+--使用vnl(a,0)排空查询
+SQL> select first_name,title,salary,salary+salary*nvl(commission_pct,0) year from s_emp;
+
+FIRST_NAME                TITLE                         SALARY       YEAR
+------------------------- ------------------------- ---------- ----------
+Carmen                    President                       2500       2500
+LaDoris                   VP, Operations                  1450       1450
+Midori                    VP, Sales                       1400       1400
+Mark                      VP, Finance                     1450       1450
+Audry                     VP, Administration              1550       1550
+Molly                     Warehouse Manager               1200       1200
+Roberta                   Warehouse Manager               1250       1250
+Ben                       Warehouse Manager               1100       1100
+Antoinette                Warehouse Manager               1300       1300
+Marta                     Warehouse Manager               1307       1307
+Colin                     Sales Representative            1400      15400
+Henry                     Sales Representative            1490      20115
+Yasmin                    Sales Representative            1515      16665
+Mai                       Sales Representative            1525      24400
+Andre                     Sales Representative            1450      26825
+Elena                     Stock Clerk                     1400       1400
+George                    Stock Clerk                      940        940
+Akira                     Stock Clerk                     1200       1200
+Vikram                    Stock Clerk                      795        795
+Chad                      Stock Clerk                      750        750
+Alexander                 Stock Clerk                      850        850
+Eddie                     Stock Clerk                      800        800
+Radha                     Stock Clerk                      795        795
+Bela                      Stock Clerk                      860        860
+Sylvie                    Stock Clerk                     1100       1100
+
+已选择25行。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ####################################################################################################################################
 
 基本知识点:
