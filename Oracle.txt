@@ -236,6 +236,88 @@ SQL> select distinct dept_id from s_emp;
 已选择12行。
 
 
+##Oracle去重查询
+
+/*
+	distinct:
+		如果distinct后面写了好几个列,则所有的列都会被排重.
+*/
+
+--虽然部门的id有相同的,职位列也有相同的.但是整体的表是没有重复的.
+SQL> select distinct dept_id "bumen",title "zhiwei" from s_emp;
+
+     bumen zhiwei
+---------- -------------------------
+        50 President
+        42 Warehouse Manager
+        45 Stock Clerk
+        44 Warehouse Manager
+        34 Sales Representative
+        50 VP, Administration
+        45 Warehouse Manager
+        44 Stock Clerk
+        10 VP, Finance
+        42 Stock Clerk
+        31 VP, Sales
+        41 Warehouse Manager
+        43 Stock Clerk
+        32 Sales Representative
+        33 Sales Representative
+        41 Stock Clerk
+        34 Stock Clerk
+        43 Warehouse Manager
+        41 VP, Operations
+        31 Sales Representative
+        35 Sales Representative
+
+已选择21行。
+
+##
+	Oracle的||连接符(相当于Java中的"+"号)
+##
+
+SQL> ed
+已写入 file afiedt.buf
+
+  1* select last_name||', your salary is '||salary information from s_emp
+SQL>
+SQL> /
+
+INFORMATION
+--------------------------------------------------------------------------------
+Velasquez, your salary is 2500
+Ngao, your salary is 1450
+Nagayama, your salary is 1400
+Quick-To-See, your salary is 1450
+Ropeburn, your salary is 1550
+Urguhart, your salary is 1200
+Menchu, your salary is 1250
+Biri, your salary is 1100
+Catchpole, your salary is 1300
+Havel, your salary is 1307
+Magee, your salary is 1400
+
+INFORMATION
+--------------------------------------------------------------------------------
+Giljum, your salary is 1490
+Sedeghi, your salary is 1515
+Nguyen, your salary is 1525
+Dumas, your salary is 1450
+Maduro, your salary is 1400
+Smith, your salary is 940
+Nozaki, your salary is 1200
+Patel, your salary is 795
+Newman, your salary is 750
+Markarian, your salary is 850
+Chang, your salary is 800
+
+INFORMATION
+--------------------------------------------------------------------------------
+Patel, your salary is 795
+Dancs, your salary is 860
+Schwartz, your salary is 1100
+
+已选择25行。
 
 
 
