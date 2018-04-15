@@ -1,5 +1,17 @@
 准备入门篇:
 
+	CURD操作:
+	1.查询:
+		select * from s_emp;
+	2.删除:
+		delete from s_emp where last_name = 'mike';	
+	3.改(更新):
+		update s_emp set last_name = 'yuri' where salary = 1200;
+	4.增(插入):
+		insert into s_emp values(tuser_id.nextval,'yuri','jsd','F');
+	
+	
+	
 	--进入sqlplus cmd 界面
 		sqlplus
 
