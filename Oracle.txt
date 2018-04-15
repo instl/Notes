@@ -333,6 +333,11 @@ Schwartz, your salary is 1100
 
 
 
+--查询使用in关键字的时候,如果集合里面有null,则不能使用not in,可以使用in.
+	select * from s_emp where salary in (1200,1300,null);[正确]
+	select * from s_emp where salary not in (1200,1300,null);[错误,查不出结果]
+
+
 
 
 
