@@ -337,7 +337,19 @@ Schwartz, your salary is 1100
 	select * from s_emp where salary in (1200,1300,null);[正确]
 	select * from s_emp where salary not in (1200,1300,null);[错误,查不出结果]
 
+--模糊查询like
 
+	[在LIKE中主要使用以下两种通配符
+	 “%”：可以匹配任意长度的内容
+	 “_”:可以匹配一个长度的内容]
+
+	select * from s_emp where last_name like '_a%';[查询第二个字母是a的,且后面无所谓字符的员工]
+	seelct * from s_emp where last_name like '%%';[两个百分号就是查询所有的字符串]
+
+--模糊查询like的注意事项:
+	("\"是转义字符)
+	select * from s_emp where last_name like '%_%';[这个下划线是特殊的标识符,现在查出来的就是所有的信息]
+	select * from s_emp where last_name like '%\_%';[这个才是查询last_name中有下划线的员工记录]
 
 
 
