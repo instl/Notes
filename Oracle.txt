@@ -350,11 +350,21 @@ Schwartz, your salary is 1100
 	("\"是转义字符)
 	select * from s_emp where last_name like '%_%';[这个下划线是特殊的标识符,现在查出来的就是所有的信息]
 	select * from s_emp where last_name like '%\_%';[这个才是查询last_name中有下划线的员工记录]
-
-
-
-
-
+	
+--order by 的升序和降序查询:
+	select last_name, salary,dept_id from s_emp order by dept_id,salary;
+					[默认升序,优先排序离order by最近的列]
+	select last_name, salary,dept_id from s_emp order by dept_id,salary desc;
+					[降序排序,优先排序离desc最近的列]
+	select last_name, salary,dept_id from s_emp order by dept_id desc,salary desc;
+					[降序排序,order by后面的列都将排序]
+												
+--order by 后面 + 列/表达式/别名/序号:
+	(1)select last_name,salary*12 money from s_emp order by money desc;
+							  [表达式以及别名]
+	(2)select last_name,salary*12 money from s_emp order by 2 desc;
+								[序号]
+						
 
 
 ####################################################################################################################################
