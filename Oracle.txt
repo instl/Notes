@@ -365,7 +365,101 @@ Schwartz, your salary is 1100
 	(2)select last_name,salary*12 money from s_emp order by 2 desc;
 								[序号]
 						
+--Oracle中,null值是最大的
+	(1)select last_name, salary,commission_pct from s_emp order by commission_pct desc;
+							[commission_pct的NULL值在上面]
+	(2)select last_name, salary,commission_pct from s_emp order by commission_pct nulls last;
+							[想要null在上面,结尾添加nulls last]
 
+			SQL> ed
+		已写入 file afiedt.buf
+
+		  1  select last_name, salary,commission_pct
+		  2  from s_emp
+		  3* order by commission_pct
+		  4  /
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Sedeghi                         1515             10
+		Magee                           1400             10
+		Giljum                          1490           12.5
+		Nguyen                          1525             15
+		Dumas                           1450           17.5
+		yuri                            1200
+		Menchu                          1250
+		Biri                            1100
+		Catchpole                       1300
+		Havel                           1307
+		Maduro                          1400
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Smith                            940
+		yuri                            1200
+		Patel                            795
+		Newman                           750
+		Markarian                        850
+		Chang                            800
+		Patel                            795
+		Dancs                            860
+		Ropeburn                        1550
+		Quick-To-See                    1450
+		Nagayama                        1400
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Schwartz                        1100
+		Velasquez                       2500
+		Ngao                            1450
+
+		已选择25行。
+
+		SQL> ed
+		已写入 file afiedt.buf
+
+		  1  select last_name, salary,commission_pct
+		  2  from s_emp
+		  3* order by commission_pct desc
+		SQL> /
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Velasquez                       2500
+		Schwartz                        1100
+		Nagayama                        1400
+		Quick-To-See                    1450
+		Ropeburn                        1550
+		yuri                            1200
+		Menchu                          1250
+		Biri                            1100
+		Catchpole                       1300
+		Havel                           1307
+		Ngao                            1450
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Dancs                            860
+		Patel                            795
+		Chang                            800
+		Markarian                        850
+		Maduro                          1400
+		Smith                            940
+		yuri                            1200
+		Patel                            795
+		Newman                           750
+		Dumas                           1450           17.5
+		Nguyen                          1525             15
+
+		LAST_NAME                     SALARY COMMISSION_PCT
+		------------------------- ---------- --------------
+		Giljum                          1490           12.5
+		Sedeghi                         1515             10
+		Magee                           1400             10
+
+		已选择25行。
+		
+		
 
 ####################################################################################################################################
 
