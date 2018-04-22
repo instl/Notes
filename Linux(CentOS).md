@@ -115,3 +115,8 @@
 		(2)pwd 		[显示当前详细目录]
 
 		(3)wget	资源路径		[下载文件]
+		
+	11.重定向输出以及&&:
+
+		(1)ifconfig > ifcfg.txt		[将网络的配置信息保存到TXT文件中]
+			ifconfig >> ifcfg.txt 	[往后追加内容]
